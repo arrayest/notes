@@ -1,17 +1,17 @@
-Gitlab:
-docker pull sameersbn/gitlab:7.11.4-1
+### Gitlab:
+- docker pull sameersbn/gitlab:7.11.4-1
 
-Postgresql:
-docker pull sameersbn/postgresql:9.4
+### Postgresql:
+- docker pull sameersbn/postgresql:9.4
 
-docker run --name=postgresql-gitlab -d \
+>docker run --name=postgresql-gitlab -d \
   --env='DB_NAME=gitlabhq_production' \
   --env='DB_USER=gitlab' --env='DB_PASS=password' \
   --volume=/data/gitlab/postgresql/data/:/var/lib/postgresql \
   sameersbn/postgresql:9.4
 
-Gitlab:
-docker run --name=gitlab -d --link=postgresql-gitlab:postgresql \
+### Gitlab:
+>docker run --name=gitlab -d --link=postgresql-gitlab:postgresql \
   --link=redis-gitlab:redisio \
   --volume=/data/gitlab/data/:/home/git/data \
   -p 10022:22 -p 10080:80 \
@@ -33,26 +33,26 @@ docker run --name=gitlab -d --link=postgresql-gitlab:postgresql \
   -e GITLAB_SSH_PORT=10022 \
   sameersbn/gitlab:7.11.4-1
 
-Redis:
-docker pull sameersbn/redis:latest
+### Redis:
+- docker pull sameersbn/redis:latest
 
-docker run --name=redis-gitlab -d sameersbn/redis:latest
+- docker run --name=redis-gitlab -d sameersbn/redis:latest
 
-docker run --name=gitlab -d --link=redis-gitlab:redisio \
+- docker run --name=gitlab -d --link=redis-gitlab:redisio \
   sameersbn/gitlab:7.11.4-1
 
-Mail
+### Mail
 
-SSL
+### SSL
 
-Nginx-Proxy:
-docker run -e VIRTUAL_HOST=gitlab.coomo99.com
+### Nginx-Proxy:
+- docker run -e VIRTUAL_HOST=gitlab.coomo99.com
 
-docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
+- docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
 
 
-# Gitlab mail test:
+###  Gitlab mail test:
 
-docker exec -it gitlab "/bin/bash"
+>docker exec -it gitlab "/bin/bash"
 RAILS_ENV=production bin/rails c
 Notify.test_email("546411936@qq.com", "hi","hello world")
